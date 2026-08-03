@@ -1,9 +1,0 @@
-{
-  "commands": {
-    "md2pdf": {
-      "description": "Convert Markdown files to PDF with Chinese font detection",
-      "command": "python3 md2pdf/md2pdf.py",
-      "args": ["$ARGUMENTS"]
-    }
-  }
-}
