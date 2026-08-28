@@ -6,6 +6,7 @@
     mode: "simulation",
     endpoint: "",
     apiEndpoint: "",
+    proxyMode: true,
     appId: "personal-d9fih1mmreq4ugfv7o5g",
     workflowId: "d9mr3rhb9rsa732g1ajg",
     apiKey: ""
@@ -46,6 +47,38 @@
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), opts.timeoutMs || 60000);
+
+    if (cfg.proxyMode !== false) {
+      try {
+        const proxyResponse = await fetch("/api/hiagent", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            query,
+            apiEndpoint: endpoint,
+            apiKey: cfg.apiKey,
+            appId: cfg.appId,
+            workflowId: cfg.workflowId,
+            userId: opts.userId || "grid-worker-demo",
+            timeoutMs: opts.timeoutMs || 120000
+          }),
+          signal: controller.signal
+        });
+        const payload = await proxyResponse.json().catch(() => null);
+        if (!proxyResponse.ok || !payload || payload.ok === false) {
+          throw new Error((payload && payload.message) || `本地代理请求失败：HTTP ${proxyResponse.status}`);
+        }
+        return normalize(payload.data || payload.raw || {});
+      } catch (err) {
+        if (/Failed to fetch|NetworkError|ECONNREFUSED/.test(err.message)) {
+          throw new Error("本地代理不可用，请先运行：node server.js");
+        }
+        throw err;
+      } finally {
+        clearTimeout(timer);
+      }
+    }
+
     const headers = { "Content-Type": "application/json" };
     if (cfg.apiKey) {
       headers.Authorization = `Bearer ${cfg.apiKey}`;

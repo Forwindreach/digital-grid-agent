@@ -9,14 +9,14 @@
 
 ## 快速开始
 
-项目为纯静态页面，无需安装依赖。
+项目已合并前端与轻量后端，默认零依赖（Node 内置模块）。
 
 ```bash
 cd /Users/vincent/Documents/ChatGPT/火山agent
-python3 -m http.server 8000
+node server.js
 ```
 
-浏览器打开 `http://127.0.0.1:8000`，或直接双击打开 `index.html`。
+浏览器打开 `http://127.0.0.1:3000`。本地模拟模式也可以直接双击 `index.html` 使用；真实接入 HiAgent 时请使用 `node server.js`。
 
 ## 功能模块
 
@@ -41,6 +41,8 @@ python3 -m http.server 8000
 
 本地演示默认运行在模拟模式；切到「系统配置 → HiAgent 真实接口」后，页面会把诉求提交给 HiAgent 发布后的 API，并把真实回答展示在演示界面中。操作步骤见 [docs/合体指南.md](docs/合体指南.md)。
 
+后端 `server.js` 负责静态托管与 HiAgent 代理转发，避免浏览器跨域，并避免把 API Key 暴露在前端。
+
 ## 目录结构
 
 ```text
@@ -49,6 +51,8 @@ python3 -m http.server 8000
 ├── styles.css                    演示系统样式
 ├── app.js                        演示系统交互与模拟 Agent 流水线
 ├── hiagent-client.js             HiAgent 接口适配层（可切换模拟/真实模式）
+├── server.js                     本地后端：静态服务 + HiAgent 代理
+├── package.json                  启动脚本
 ├── data/
 │   ├── knowledge-base.js         知识库样例（前端使用）
 │   └── policy_kb.json            知识库样例（HiAgent 导入格式）
