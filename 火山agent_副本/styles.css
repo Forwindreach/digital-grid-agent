@@ -1975,20 +1975,35 @@ svg {
 .resident-dir-row {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
   width: 100%;
-  padding: 11px 12px;
   margin-bottom: 6px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--surface);
-  text-align: left;
 }
 
 .resident-dir-row:hover,
 .resident-dir-row.active {
   border-color: var(--primary);
   background: var(--primary-soft);
+}
+
+.resident-dir-select {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 12px;
+  border: 0;
+  background: transparent;
+  text-align: left;
+}
+
+.resident-dir-edit {
+  flex: none;
+  margin-right: 8px;
 }
 
 .resident-dir-main,
@@ -2058,6 +2073,131 @@ svg {
   gap: 10px;
   padding: 12px 18px 16px;
   border-top: 1px solid var(--border);
+}
+
+.tag.ok {
+  background: var(--green-soft);
+  color: var(--green);
+}
+
+.resident-import-modal {
+  width: min(820px, 100%);
+}
+
+.import-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 14px 18px;
+  overflow-y: auto;
+}
+
+.import-steps {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.import-step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.import-step strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: #fff;
+  font-size: 12px;
+  flex: none;
+}
+
+.import-drop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 18px 16px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 6px;
+  background: var(--surface-2);
+  cursor: pointer;
+  color: var(--text-2);
+  font-size: 12px;
+}
+
+.import-drop:hover {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+.import-drop input {
+  display: none;
+}
+
+.import-drop-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--primary);
+}
+
+.import-drop-icon svg {
+  width: 28px;
+  height: 28px;
+}
+
+.import-preview-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+
+.import-preview {
+  max-height: 280px;
+  overflow: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.import-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.import-table th,
+.import-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.import-table th {
+  position: sticky;
+  top: 0;
+  background: var(--surface-2);
+  color: var(--text-2);
+  font-weight: 600;
+}
+
+.import-table tr.invalid td {
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .toast-wrap {
@@ -2303,5 +2443,14 @@ svg {
 
   .resident-dir-side {
     align-items: flex-start;
+  }
+
+  .import-steps {
+    grid-template-columns: 1fr;
+  }
+
+  .import-preview-head {
+    flex-direction: column;
+    gap: 4px;
   }
 }

@@ -430,6 +430,7 @@
           <option>温泉街道·观风亭社区</option>
           <option>温泉街道·金泉社区</option>
         </select>
+        <button class="button ghost" id="btn-import-resident" type="button">批量导入</button>
         <button class="button primary" id="btn-add-resident" type="button">新增登记</button>
       </div>
       <div class="resident-dir-list" id="resident-dir-list"></div>
@@ -472,9 +473,50 @@
     </div>
   </div>
 
+  <div class="modal-mask" id="resident-import-modal" hidden>
+    <div class="modal resident-import-modal" role="dialog" aria-modal="true" aria-labelledby="resident-import-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-import-title">居民信息批量导入</h3>
+          <span class="muted">下载登记表发到居民群，回收后选择文件一键导入</span>
+        </div>
+        <button class="icon-button" id="btn-close-import" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="import-body">
+        <div class="import-steps">
+          <div class="import-step"><strong>1</strong><span>下载登记表</span></div>
+          <div class="import-step"><strong>2</strong><span>居民群内填写</span></div>
+          <div class="import-step"><strong>3</strong><span>回收并导入</span></div>
+        </div>
+        <a class="button ghost wide" id="btn-download-template" href="data/templates/居民信息登记表.xlsx" download>
+          <span class="btn-icon" data-icon="file"></span>
+          <span>下载居民信息登记表模板</span>
+        </a>
+        <label class="import-drop" for="import-file">
+          <input id="import-file" type="file" accept=".xlsx,.csv">
+          <span class="import-drop-icon" data-icon="upload"></span>
+          <strong>点击选择表格文件</strong>
+          <span>支持 .xlsx 和 .csv，导入前可预览确认</span>
+        </label>
+        <div class="import-preview-head">
+          <span id="import-preview-count">尚未选择文件</span>
+          <span>系统自动识别“新增登记”与“地址变更”</span>
+        </div>
+        <div class="import-preview" id="import-preview"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="button ghost" id="btn-cancel-import" type="button">取消</button>
+        <button class="button primary" id="btn-confirm-import" type="button" disabled>确认导入</button>
+      </div>
+    </div>
+  </div>
+
   <div class="toast-wrap" id="toast-wrap" aria-live="polite"></div>
   <script src="data/knowledge-base.js"></script>
   <script src="hiagent-client.js"></script>
+  <script src="vendor/xlsx.full.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

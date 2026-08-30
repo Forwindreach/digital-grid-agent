@@ -23,6 +23,8 @@
     file: '<path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/>',
     pin: '<path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>',
     arrow: '<path d="m9 18 6-6-6-6"/>',
+    edit: '<path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>',
+    upload: '<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m17 8-5-5-5 5"/><path d="M12 3v12"/>',
     bot: '<rect x="4" y="8" width="16" height="12" rx="2"/><path d="M12 4v4M8 13h.01M16 13h.01M8 17h8"/>',
     layers: '<path d="m12 2 8.5 4.5L12 11 3.5 6.5 12 2Z"/><path d="m3.5 12 8.5 4.5 8.5-4.5"/><path d="m3.5 17.5 8.5 4.5 8.5-4.5"/>',
     history: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/>',
@@ -248,6 +250,8 @@
     resident: 0,
     residentSearch: "",
     residentFilter: "全部网格",
+    editingResidentId: null,
+    importRows: [],
     running: false,
     case: null,
     tickets: DEFAULT_TICKETS.map((t) => ({ ...t })),
@@ -399,6 +403,15 @@
     }[ch]));
   }
 
+  function renderStaticIcons() {
+    $$("[data-icon]").forEach((el) => {
+      const name = el.dataset.icon;
+      if (name && ICONS[name] && !el.querySelector("svg")) {
+        el.innerHTML = icon(name);
+      }
+    });
+  }
+
   function renderResidentDirectory() {
     const q = state.residentSearch.trim().toLowerCase();
     const filter = state.residentFilter;
@@ -411,18 +424,23 @@
     const activeId = RESIDENTS[state.resident] && RESIDENTS[state.resident].id;
     $("#resident-dir-count").textContent = `显示 ${list.length} / 在册 ${RESIDENT_TOTAL}`;
     $("#resident-dir-list").innerHTML = list.map((r) => `
-      <button class="resident-dir-row ${r.id === activeId ? "active" : ""}" type="button" data-resident-id="${r.id}">
-        <span class="avatar">${r.avatar}</span>
-        <span class="resident-dir-main">
-          <strong>${esc(r.name)}</strong>
-          <span>${esc(r.addr)}</span>
-          <span>${esc(r.community)} · ${esc(r.grid)}</span>
-        </span>
-        <span class="resident-dir-side">
-          <span>${esc(r.phone)}</span>
-          <span class="tag cat">${esc(r.tags)}</span>
-        </span>
-      </button>
+      <div class="resident-dir-row ${r.id === activeId ? "active" : ""}">
+        <button class="resident-dir-select" type="button" data-resident-id="${r.id}">
+          <span class="avatar">${r.avatar}</span>
+          <span class="resident-dir-main">
+            <strong>${esc(r.name)}</strong>
+            <span>${esc(r.addr)}</span>
+            <span>${esc(r.community)} · ${esc(r.grid)}</span>
+          </span>
+          <span class="resident-dir-side">
+            <span>${esc(r.phone)}</span>
+            <span class="tag cat">${esc(r.tags)}</span>
+          </span>
+        </button>
+        <button class="icon-button resident-dir-edit" type="button" data-edit-id="${r.id}" title="编辑档案或地址">
+          <span class="btn-icon" data-icon="edit"></span>
+        </button>
+      </div>
     `).join("") || `<div class="resident-dir-empty">未找到匹配居民，可点击“新增登记”建档</div>`;
   }
 
@@ -447,16 +465,30 @@
     toast(`已切换到 ${RESIDENTS[index].name} 的居民档案`, "ok");
   }
 
-  function openResidentForm() {
+  function openResidentForm(editId) {
+    const edit = editId ? RESIDENTS.find((r) => r.id === editId) : null;
+    state.editingResidentId = edit ? edit.id : null;
+    $("#rf-name").value = edit ? edit.name : "";
+    $("#rf-phone").value = edit ? edit.phone : "";
+    $("#rf-community").value = edit ? edit.community : $("#rf-community").value;
+    $("#rf-grid").value = edit ? edit.grid : "";
+    $("#rf-addr").value = edit ? edit.addr : "";
+    $("#rf-tags").value = edit ? edit.tags : "";
+    $("#resident-form-title").textContent = edit ? "编辑居民档案" : "新增居民登记";
+    $("#btn-save-resident").textContent = edit ? "保存修改" : "保存并选中";
     $("#resident-form-modal").hidden = false;
     $("#rf-name").focus();
   }
 
   function closeResidentForm() {
     $("#resident-form-modal").hidden = true;
+    state.editingResidentId = null;
+    ["rf-name", "rf-phone", "rf-addr", "rf-grid", "rf-tags"].forEach((id) => {
+      $("#" + id).value = "";
+    });
   }
 
-  function saveNewResident() {
+  function saveResidentForm() {
     const name = $("#rf-name").value.trim();
     const phone = $("#rf-phone").value.trim();
     const addr = $("#rf-addr").value.trim();
@@ -467,6 +499,29 @@
       toast("请至少填写姓名和楼栋房号", "warn");
       return;
     }
+
+    if (state.editingResidentId) {
+      const index = RESIDENTS.findIndex((r) => r.id === state.editingResidentId);
+      if (index < 0) return;
+      const prevAddr = RESIDENTS[index].addr;
+      RESIDENTS[index] = {
+        ...RESIDENTS[index],
+        name,
+        phone: phone || RESIDENTS[index].phone,
+        addr,
+        community,
+        grid: grid || RESIDENTS[index].grid,
+        tags: tags || RESIDENTS[index].tags,
+        lastVisit: "2026-08-30"
+      };
+      state.resident = index;
+      renderResident();
+      closeResidentForm();
+      closeResidentModal();
+      toast(prevAddr !== addr ? `已更新 ${name} 的地址：${addr}` : `已更新 ${name} 的居民档案`, "ok");
+      return;
+    }
+
     const id = `R-${String(RESIDENTS.length + 1).padStart(4, "0")}`;
     RESIDENTS.push({
       id,
@@ -487,6 +542,213 @@
     closeResidentForm();
     closeResidentModal();
     toast(`已登记 ${name}，并切换到该居民档案`, "ok");
+  }
+
+  function openImportModal() {
+    state.importRows = [];
+    $("#resident-import-modal").hidden = false;
+    $("#import-preview-count").textContent = "尚未选择文件";
+    $("#import-preview").innerHTML = `<div class="resident-dir-empty">选择 .xlsx 或 .csv 文件后，将在这里显示导入预览</div>`;
+    $("#btn-confirm-import").disabled = true;
+  }
+
+  function closeImportModal() {
+    $("#resident-import-modal").hidden = true;
+    $("#import-file").value = "";
+    state.importRows = [];
+  }
+
+  function normalizePhone(value) {
+    return String(value == null ? "" : value).replace(/\D/g, "");
+  }
+
+  function parseCsv(text) {
+    const rows = [];
+    let row = [];
+    let field = "";
+    let inQuotes = false;
+    const src = String(text).replace(/^\uFEFF/, "");
+    for (let i = 0; i < src.length; i += 1) {
+      const ch = src[i];
+      if (inQuotes) {
+        if (ch === "\"") {
+          if (src[i + 1] === "\"") {
+            field += "\"";
+            i += 1;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          field += ch;
+        }
+      } else if (ch === "\"") {
+        inQuotes = true;
+      } else if (ch === ",") {
+        row.push(field);
+        field = "";
+      } else if (ch === "\n") {
+        row.push(field);
+        rows.push(row);
+        row = [];
+        field = "";
+      } else if (ch !== "\r") {
+        field += ch;
+      }
+    }
+    if (field.length || row.length) {
+      row.push(field);
+      rows.push(row);
+    }
+    return rows.filter((r) => r.some((cell) => String(cell).trim() !== ""));
+  }
+
+  function importHeaderKey(value) {
+    return String(value).replace(/[*\s]/g, "").replace(/[（）()]/g, "");
+  }
+
+  function parseImportFile(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      let rows = [];
+      if (/\.csv$/i.test(file.name)) {
+        rows = parseCsv(reader.result);
+      } else if (window.XLSX) {
+        const workbook = window.XLSX.read(new Uint8Array(reader.result), { type: "array" });
+        const sheetName = workbook.SheetNames[0];
+        rows = window.XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1 });
+      } else {
+        toast("未加载 Excel 解析组件", "error");
+        return;
+      }
+
+      const headerIndex = rows.findIndex((r) => r.some((c) => String(c).includes("姓名") && String(c).includes("手机号")));
+      const headerRow = headerIndex >= 0 ? rows[headerIndex] : rows[0];
+      const keys = headerRow.map((h) => {
+        const key = importHeaderKey(h);
+        if (key.includes("登记类型")) return "type";
+        if (key.includes("姓名")) return "name";
+        if (key.includes("手机号")) return "phone";
+        if (key.includes("所属社区")) return "community";
+        if (key.includes("所属网格")) return "grid";
+        if (key.includes("现居住地址")) return "addr";
+        if (key.includes("原居住地址")) return "oldAddr";
+        if (key.includes("人员标签")) return "tags";
+        if (key.includes("备注")) return "note";
+        return key;
+      });
+
+      const dataRows = rows.slice(headerIndex >= 0 ? headerIndex + 1 : 1);
+      const parsed = [];
+      for (const row of dataRows) {
+        const item = {};
+        keys.forEach((key, i) => {
+          item[key] = row[i] == null ? "" : String(row[i]).trim();
+        });
+        if (!item.name && !item.phone && !item.addr) continue;
+        const name = item.name || "";
+        const phone = normalizePhone(item.phone);
+        const addr = item.addr || "";
+        if (!name || !addr) {
+          item.valid = false;
+          item.action = "跳过";
+          item.reason = "缺少姓名或现居住地址";
+        } else {
+          const phoneIndex = phone ? RESIDENTS.findIndex((r) => normalizePhone(r.phone) === phone) : -1;
+          const nameIndex = phoneIndex < 0 ? RESIDENTS.findIndex((r) => r.name === name) : -1;
+          const index = phoneIndex >= 0 ? phoneIndex : nameIndex;
+          item.valid = true;
+          if (index >= 0) {
+            const current = RESIDENTS[index];
+            const changed = current.addr !== addr || current.community !== item.community || current.grid !== item.grid;
+            if (!changed && item.type !== "地址变更") {
+              item.action = "跳过";
+              item.reason = "档案已存在且信息无变化";
+            } else {
+              item.action = "更新";
+              item.reason = current.addr !== addr ? `地址变更：${current.addr} → ${addr}` : "更新居民档案";
+            }
+          } else {
+            item.action = "新增";
+            item.reason = "新建居民档案";
+          }
+        }
+        parsed.push(item);
+      }
+      state.importRows = parsed;
+      renderImportPreview();
+    };
+    if (/\.csv$/i.test(file.name)) {
+      reader.readAsText(file);
+    } else {
+      reader.readAsArrayBuffer(file);
+    }
+  }
+
+  function renderImportPreview() {
+    const rows = state.importRows;
+    const added = rows.filter((r) => r.action === "新增").length;
+    const updated = rows.filter((r) => r.action === "更新").length;
+    const skipped = rows.filter((r) => r.action === "跳过").length;
+    $("#import-preview-count").textContent = `共 ${rows.length} 条：新增 ${added} · 更新 ${updated} · 跳过 ${skipped}`;
+    $("#btn-confirm-import").disabled = added + updated === 0;
+    $("#import-preview").innerHTML = rows.length
+      ? `<table class="import-table"><thead><tr><th>姓名</th><th>手机号</th><th>现居住地址</th><th>结果</th><th>说明</th></tr></thead><tbody>${rows.map((r) => `
+          <tr class="${r.valid ? "" : "invalid"}">
+            <td>${esc(r.name)}</td>
+            <td>${esc(r.phone)}</td>
+            <td>${esc(r.addr)}</td>
+            <td><span class="tag ${r.action === "新增" ? "cat" : r.action === "更新" ? "ok" : ""}">${r.action}</span></td>
+            <td>${esc(r.reason || "")}</td>
+          </tr>`).join("")}</tbody></table>`
+      : `<div class="resident-dir-empty">未识别到有效数据行</div>`;
+  }
+
+  function confirmImport() {
+    let added = 0;
+    let updated = 0;
+    let skipped = 0;
+    for (const row of state.importRows) {
+      if (!row.valid || row.action === "跳过") {
+        if (row.valid) skipped += 1;
+        continue;
+      }
+      const phone = normalizePhone(row.phone);
+      let index = phone ? RESIDENTS.findIndex((r) => normalizePhone(r.phone) === phone) : -1;
+      if (index < 0 && row.name) index = RESIDENTS.findIndex((r) => r.name === row.name);
+      if (index >= 0) {
+        const current = RESIDENTS[index];
+        RESIDENTS[index] = {
+          ...current,
+          name: row.name || current.name,
+          phone: phone || current.phone,
+          addr: row.addr || current.addr,
+          community: row.community || current.community,
+          grid: row.grid || current.grid,
+          tags: row.tags || current.tags,
+          lastVisit: "2026-08-30"
+        };
+        updated += 1;
+      } else {
+        RESIDENTS.push({
+          id: `R-${String(RESIDENTS.length + 1).padStart(4, "0")}`,
+          name: row.name,
+          avatar: row.name.slice(0, 1),
+          phone: phone || "未登记",
+          addr: row.addr,
+          community: row.community || "温泉街道·华林社区",
+          grid: row.grid || "待分配网格",
+          tags: row.tags || "普通居民",
+          lastVisit: "2026-08-30",
+          ctx: { "历史诉求": "0 件", "常用渠道": "待补充", "风险标签": "暂无", "最近诉求": "无" }
+        });
+        added += 1;
+      }
+    }
+    state.residentSearch = "";
+    state.residentFilter = "全部网格";
+    closeImportModal();
+    renderResidentDirectory();
+    toast(`导入完成：新增 ${added} 人，更新 ${updated} 人，跳过 ${skipped} 人`, "ok");
   }
 
   function renderScenario() {
@@ -1056,6 +1318,11 @@
       renderResidentDirectory();
     });
     $("#resident-dir-list").addEventListener("click", (e) => {
+      const editBtn = e.target.closest("[data-edit-id]");
+      if (editBtn) {
+        openResidentForm(editBtn.dataset.editId);
+        return;
+      }
       const row = e.target.closest("[data-resident-id]");
       if (row) selectResidentById(row.dataset.residentId);
     });
@@ -1066,7 +1333,18 @@
     $("#resident-form-modal").addEventListener("click", (e) => {
       if (e.target === $("#resident-form-modal")) closeResidentForm();
     });
-    $("#btn-save-resident").addEventListener("click", saveNewResident);
+    $("#btn-save-resident").addEventListener("click", saveResidentForm);
+
+    $("#btn-import-resident").addEventListener("click", openImportModal);
+    $("#btn-close-import").addEventListener("click", closeImportModal);
+    $("#btn-cancel-import").addEventListener("click", closeImportModal);
+    $("#resident-import-modal").addEventListener("click", (e) => {
+      if (e.target === $("#resident-import-modal")) closeImportModal();
+    });
+    $("#import-file").addEventListener("change", (e) => {
+      if (e.target.files && e.target.files[0]) parseImportFile(e.target.files[0]);
+    });
+    $("#btn-confirm-import").addEventListener("click", confirmImport);
 
     $("#message-input").addEventListener("input", (e) => {
       $("#char-count").textContent = `${e.target.value.length} / 500`;
@@ -1209,6 +1487,7 @@
   function init() {
     renderClock();
     setInterval(renderClock, 1000);
+    renderStaticIcons();
     renderNav();
     renderAgentList();
     renderScenario();
