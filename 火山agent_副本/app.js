@@ -717,6 +717,7 @@
       return `${d.title} ${d.summary} ${d.content} ${d.keywords.join(" ")} ${d.questions.join(" ")}`.includes(q);
     });
     $("#kb-doc-count").textContent = docs.length;
+    $("#kb-cat-count").textContent = new Set((window.KNOWLEDGE_BASE || []).map((d) => d.category)).size;
     $("#kb-list").innerHTML = docs.map((d) => `
       <article class="kb-card" data-kb="${d.id}">
         <div class="kb-card-head"><strong>${d.title}</strong><span class="tag cat">${d.category}</span></div>
@@ -735,6 +736,7 @@
       <h3 class="kb-detail-title">${d.title}</h3>
       <div class="kb-detail-source"><span>${d.source}</span><span>${d.docNo}</span><span>更新 ${d.updateDate}</span></div>
       <div class="kb-detail-content">${d.content}</div>
+      ${d.url ? `<div class="kb-detail-source"><a href="${d.url}" target="_blank" rel="noopener">查看官方原文</a></div>` : ""}
       <h4>高频问题</h4>
       <ul class="kb-detail-content" style="padding-left:20px;margin:0">${d.questions.map((x) => `<li>${x}</li>`).join("")}</ul>`;
   }
