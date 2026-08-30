@@ -106,8 +106,9 @@
                 <div class="resident-info">
                   <strong id="resident-name">王秀英</strong>
                   <span id="resident-addr">华林花园 3 号楼 502</span>
+                  <span class="resident-registry-hint">在册 1,268 人 · 点击登记</span>
                 </div>
-                <button class="icon-button" id="btn-resident" type="button" title="切换居民档案">
+                <button class="icon-button" id="btn-resident" type="button" title="居民档案登记">
                   <span class="btn-icon" data-icon="user"></span>
                 </button>
               </div>
@@ -404,6 +405,70 @@
           <div class="resident-context" id="resident-context"></div>
         </section>
       </aside>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="resident-modal" hidden>
+    <div class="modal resident-modal" role="dialog" aria-modal="true" aria-labelledby="resident-modal-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-modal-title">居民档案登记</h3>
+          <span class="muted">搜索姓名、手机号或楼栋房号，点击即可切换</span>
+        </div>
+        <button class="icon-button" id="btn-close-resident" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="resident-dir-toolbar">
+        <div class="search-box">
+          <span class="search-icon" data-icon="search"></span>
+          <input id="resident-search" type="search" placeholder="搜索姓名 / 手机号 / 楼栋房号">
+        </div>
+        <select id="resident-filter" aria-label="按网格筛选">
+          <option>全部网格</option>
+          <option>温泉街道·华林社区</option>
+          <option>温泉街道·观风亭社区</option>
+          <option>温泉街道·金泉社区</option>
+        </select>
+        <button class="button primary" id="btn-add-resident" type="button">新增登记</button>
+      </div>
+      <div class="resident-dir-list" id="resident-dir-list"></div>
+      <div class="resident-dir-foot">
+        <span id="resident-dir-count">--</span>
+        <span>网格在册 1,268 人</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="resident-form-modal" hidden>
+    <div class="modal resident-form-modal" role="dialog" aria-modal="true" aria-labelledby="resident-form-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-form-title">新增居民登记</h3>
+          <span class="muted">保存后自动切换到新档案</span>
+        </div>
+        <button class="icon-button" id="btn-close-resident-form" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="resident-form-grid">
+        <label class="field"><span>姓名</span><input id="rf-name" type="text" placeholder="居民姓名"></label>
+        <label class="field"><span>手机号</span><input id="rf-phone" type="text" placeholder="用于联系回访"></label>
+        <label class="field"><span>所属社区</span>
+          <select id="rf-community">
+            <option>温泉街道·华林社区</option>
+            <option>温泉街道·观风亭社区</option>
+            <option>温泉街道·金泉社区</option>
+          </select>
+        </label>
+        <label class="field"><span>所属网格</span><input id="rf-grid" type="text" placeholder="如 华林网格 03"></label>
+        <label class="field span-2"><span>楼栋房号</span><input id="rf-addr" type="text" placeholder="如 华林花园 3 号楼 502"></label>
+        <label class="field span-2"><span>标签</span><input id="rf-tags" type="text" placeholder="如 高龄老人、独居、租户"></label>
+      </div>
+      <div class="modal-actions">
+        <button class="button ghost" id="btn-cancel-resident" type="button">取消</button>
+        <button class="button primary" id="btn-save-resident" type="button">保存并选中</button>
+      </div>
     </div>
   </div>
 

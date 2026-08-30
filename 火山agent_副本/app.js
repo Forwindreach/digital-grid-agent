@@ -41,41 +41,152 @@
 
   const RESIDENTS = [
     {
+      id: "R-0001",
       name: "王秀英",
       avatar: "王",
+      phone: "138****2351",
       addr: "华林花园 3 号楼 502",
+      community: "温泉街道·华林社区",
+      grid: "华林网格 03",
       tags: "高龄老人",
+      lastVisit: "2026-08-18",
       ctx: { "历史诉求": "2 件", "常用渠道": "微信语音", "风险标签": "高龄独居", "最近诉求": "楼道灯报修（已闭环）" }
     },
     {
+      id: "R-0002",
       name: "林建国",
       avatar: "林",
+      phone: "139****7720",
       addr: "五四路 193 号 2 单元",
+      community: "温泉街道·华林社区",
+      grid: "华林网格 02",
       tags: "上班族",
+      lastVisit: "2026-08-21",
       ctx: { "历史诉求": "1 件", "常用渠道": "微信群", "风险标签": "夜间噪音敏感", "最近诉求": "施工噪音（处理中）" }
     },
     {
+      id: "R-0003",
       name: "陈丽华",
       avatar: "陈",
+      phone: "136****8106",
       addr: "湖东路 123 号 2 号楼",
+      community: "温泉街道·观风亭社区",
+      grid: "观风亭网格 01",
       tags: "业主代表",
+      lastVisit: "2026-08-20",
       ctx: { "历史诉求": "3 件", "常用渠道": "小程序", "风险标签": "房屋安全关注", "最近诉求": "消防通道占用（已闭环）" }
     },
     {
+      id: "R-0004",
       name: "郑敏",
       avatar: "郑",
+      phone: "188****3312",
       addr: "观风亭街 56 号",
+      community: "温泉街道·观风亭社区",
+      grid: "观风亭网格 02",
       tags: "小微企业主",
+      lastVisit: "2026-08-19",
       ctx: { "历史诉求": "1 件", "常用渠道": "电话", "风险标签": "政策咨询", "最近诉求": "创业担保贷款（已闭环）" }
     },
     {
+      id: "R-0005",
       name: "刘桂香",
       avatar: "刘",
+      phone: "159****4903",
       addr: "金泉弄 8 号",
+      community: "温泉街道·金泉社区",
+      grid: "金泉网格 04",
       tags: "独居老人",
+      lastVisit: "2026-08-22",
       ctx: { "历史诉求": "0 件", "常用渠道": "微信群", "风险标签": "需要关怀", "最近诉求": "无" }
+    },
+    {
+      id: "R-0006",
+      name: "黄志强",
+      avatar: "黄",
+      phone: "137****8846",
+      addr: "华林花园 5 号楼 1201",
+      community: "温泉街道·华林社区",
+      grid: "华林网格 03",
+      tags: "租户",
+      lastVisit: "2026-08-15",
+      ctx: { "历史诉求": "1 件", "常用渠道": "小程序", "风险标签": "房屋租赁", "最近诉求": "噪音投诉（已闭环）" }
+    },
+    {
+      id: "R-0007",
+      name: "周淑芬",
+      avatar: "周",
+      phone: "131****6621",
+      addr: "观风亭街 18 号 3 单元",
+      community: "温泉街道·观风亭社区",
+      grid: "观风亭网格 01",
+      tags: "独居老人",
+      lastVisit: "2026-08-23",
+      ctx: { "历史诉求": "2 件", "常用渠道": "微信语音", "风险标签": "需上门关怀", "最近诉求": "助餐咨询（处理中）" }
+    },
+    {
+      id: "R-0008",
+      name: "吴建国",
+      avatar: "吴",
+      phone: "158****2094",
+      addr: "金泉弄 21 号",
+      community: "温泉街道·金泉社区",
+      grid: "金泉网格 02",
+      tags: "小微企业主",
+      lastVisit: "2026-08-17",
+      ctx: { "历史诉求": "1 件", "常用渠道": "电话", "风险标签": "政策咨询", "最近诉求": "房租减免（已闭环）" }
+    },
+    {
+      id: "R-0009",
+      name: "徐丽",
+      avatar: "徐",
+      phone: "135****5078",
+      addr: "湖东路 88 号 1 号楼",
+      community: "温泉街道·观风亭社区",
+      grid: "观风亭网格 03",
+      tags: "宝妈",
+      lastVisit: "2026-08-16",
+      ctx: { "历史诉求": "0 件", "常用渠道": "微信群", "风险标签": "儿童家庭", "最近诉求": "无" }
+    },
+    {
+      id: "R-0010",
+      name: "何军",
+      avatar: "何",
+      phone: "186****9135",
+      addr: "五四路 210 号 6 单元",
+      community: "温泉街道·华林社区",
+      grid: "华林网格 02",
+      tags: "养犬登记",
+      lastVisit: "2026-08-14",
+      ctx: { "历史诉求": "1 件", "常用渠道": "小程序", "风险标签": "养犬管理", "最近诉求": "犬证办理（已闭环）" }
+    },
+    {
+      id: "R-0011",
+      name: "杨梅",
+      avatar: "杨",
+      phone: "180****3267",
+      addr: "华林花园 8 号楼 301",
+      community: "温泉街道·华林社区",
+      grid: "华林网格 04",
+      tags: "热心志愿者",
+      lastVisit: "2026-08-21",
+      ctx: { "历史诉求": "0 件", "常用渠道": "微信群", "风险标签": "志愿者骨干", "最近诉求": "无" }
+    },
+    {
+      id: "R-0012",
+      name: "陈伟",
+      avatar: "陈",
+      phone: "133****7582",
+      addr: "观风亭街 33 号",
+      community: "温泉街道·观风亭社区",
+      grid: "观风亭网格 02",
+      tags: "租户",
+      lastVisit: "2026-08-12",
+      ctx: { "历史诉求": "2 件", "常用渠道": "电话", "风险标签": "快递从业人员", "最近诉求": "停车问题（已闭环）" }
     }
   ];
+
+  const RESIDENT_TOTAL = 1268;
 
   const SCENARIOS = [
     {
@@ -135,6 +246,8 @@
     channel: "微信群",
     scenario: 0,
     resident: 0,
+    residentSearch: "",
+    residentFilter: "全部网格",
     running: false,
     case: null,
     tickets: DEFAULT_TICKETS.map((t) => ({ ...t })),
@@ -274,6 +387,106 @@
     $("#resident-name").textContent = r.name;
     $("#resident-addr").textContent = r.addr;
     renderResidentContext();
+  }
+
+  function esc(value) {
+    return String(value == null ? "" : value).replace(/[&<>"']/g, (ch) => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      "\"": "&quot;",
+      "'": "&#39;"
+    }[ch]));
+  }
+
+  function renderResidentDirectory() {
+    const q = state.residentSearch.trim().toLowerCase();
+    const filter = state.residentFilter;
+    const list = RESIDENTS.filter((r) => {
+      const hay = `${r.id} ${r.name} ${r.phone} ${r.addr} ${r.community} ${r.grid} ${r.tags}`.toLowerCase();
+      const matchQuery = !q || hay.includes(q);
+      const matchFilter = filter === "全部网格" || r.community === filter;
+      return matchQuery && matchFilter;
+    });
+    const activeId = RESIDENTS[state.resident] && RESIDENTS[state.resident].id;
+    $("#resident-dir-count").textContent = `显示 ${list.length} / 在册 ${RESIDENT_TOTAL}`;
+    $("#resident-dir-list").innerHTML = list.map((r) => `
+      <button class="resident-dir-row ${r.id === activeId ? "active" : ""}" type="button" data-resident-id="${r.id}">
+        <span class="avatar">${r.avatar}</span>
+        <span class="resident-dir-main">
+          <strong>${esc(r.name)}</strong>
+          <span>${esc(r.addr)}</span>
+          <span>${esc(r.community)} · ${esc(r.grid)}</span>
+        </span>
+        <span class="resident-dir-side">
+          <span>${esc(r.phone)}</span>
+          <span class="tag cat">${esc(r.tags)}</span>
+        </span>
+      </button>
+    `).join("") || `<div class="resident-dir-empty">未找到匹配居民，可点击“新增登记”建档</div>`;
+  }
+
+  function openResidentModal() {
+    $("#resident-modal").hidden = false;
+    renderResidentDirectory();
+    const input = $("#resident-search");
+    input.value = state.residentSearch;
+    input.focus();
+  }
+
+  function closeResidentModal() {
+    $("#resident-modal").hidden = true;
+  }
+
+  function selectResidentById(id) {
+    const index = RESIDENTS.findIndex((r) => r.id === id);
+    if (index < 0) return;
+    state.resident = index;
+    renderResident();
+    closeResidentModal();
+    toast(`已切换到 ${RESIDENTS[index].name} 的居民档案`, "ok");
+  }
+
+  function openResidentForm() {
+    $("#resident-form-modal").hidden = false;
+    $("#rf-name").focus();
+  }
+
+  function closeResidentForm() {
+    $("#resident-form-modal").hidden = true;
+  }
+
+  function saveNewResident() {
+    const name = $("#rf-name").value.trim();
+    const phone = $("#rf-phone").value.trim();
+    const addr = $("#rf-addr").value.trim();
+    const community = $("#rf-community").value;
+    const grid = $("#rf-grid").value.trim();
+    const tags = $("#rf-tags").value.trim();
+    if (!name || !addr) {
+      toast("请至少填写姓名和楼栋房号", "warn");
+      return;
+    }
+    const id = `R-${String(RESIDENTS.length + 1).padStart(4, "0")}`;
+    RESIDENTS.push({
+      id,
+      name,
+      avatar: name.slice(0, 1),
+      phone: phone || "未登记",
+      addr,
+      community,
+      grid: grid || "待分配网格",
+      tags: tags || "普通居民",
+      lastVisit: "2026-08-30",
+      ctx: { "历史诉求": "0 件", "常用渠道": "待补充", "风险标签": "暂无", "最近诉求": "无" }
+    });
+    state.resident = RESIDENTS.length - 1;
+    state.residentSearch = "";
+    state.residentFilter = "全部网格";
+    renderResident();
+    closeResidentForm();
+    closeResidentModal();
+    toast(`已登记 ${name}，并切换到该居民档案`, "ok");
   }
 
   function renderScenario() {
@@ -828,10 +1041,32 @@
       renderScenario();
     }));
 
-    $("#btn-resident").addEventListener("click", () => {
-      state.resident = (state.resident + 1) % RESIDENTS.length;
-      renderResident();
+    $("#btn-resident").addEventListener("click", openResidentModal);
+
+    $("#btn-close-resident").addEventListener("click", closeResidentModal);
+    $("#resident-modal").addEventListener("click", (e) => {
+      if (e.target === $("#resident-modal")) closeResidentModal();
     });
+    $("#resident-search").addEventListener("input", (e) => {
+      state.residentSearch = e.target.value;
+      renderResidentDirectory();
+    });
+    $("#resident-filter").addEventListener("change", (e) => {
+      state.residentFilter = e.target.value;
+      renderResidentDirectory();
+    });
+    $("#resident-dir-list").addEventListener("click", (e) => {
+      const row = e.target.closest("[data-resident-id]");
+      if (row) selectResidentById(row.dataset.residentId);
+    });
+
+    $("#btn-add-resident").addEventListener("click", openResidentForm);
+    $("#btn-cancel-resident").addEventListener("click", closeResidentForm);
+    $("#btn-close-resident-form").addEventListener("click", closeResidentForm);
+    $("#resident-form-modal").addEventListener("click", (e) => {
+      if (e.target === $("#resident-form-modal")) closeResidentForm();
+    });
+    $("#btn-save-resident").addEventListener("click", saveNewResident);
 
     $("#message-input").addEventListener("input", (e) => {
       $("#char-count").textContent = `${e.target.value.length} / 500`;
