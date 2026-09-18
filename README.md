@@ -1,2 +1,0 @@
-# volcano-agent
-cooperative work
