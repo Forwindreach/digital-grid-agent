@@ -1,0 +1,29 @@
+{
+  "name": "digital-grid-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "数字网格员：基于 HiAgent、多智能体协作与 RAG 的社区治理诉求闭环系统",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check app.js && node --check hiagent-client.js && node --check lib/hiagent-gateway.js && node --check lib/store.js && node --check lib/wechat-auth.js && node --check lib/worker-auth.js",
+    "test": "node tests/smoke.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Forwindreach/digital-grid-agent.git"
+  },
+  "homepage": "https://forwindreach.github.io/digital-grid-agent/",
+  "keywords": [
+    "ai-agent",
+    "rag",
+    "hiagent",
+    "smart-city",
+    "civic-tech",
+    "wechat-mini-program"
+  ],
+  "author": "Forwindreach",
+  "engines": {
+    "node": ">=18"
+  }
+}

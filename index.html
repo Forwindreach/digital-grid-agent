@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>数字网格员 · AI Agent 驱动的社区治理自动化</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="admin-login-mask" id="admin-login-mask" hidden>
+    <div class="admin-login-card">
+      <div class="admin-login-title">数字网格员平台</div>
+      <div class="admin-login-sub">请使用网格员账号登录</div>
+      <input id="admin-account" type="text" placeholder="账号" autocomplete="username">
+      <input id="admin-password" type="password" placeholder="密码" autocomplete="current-password">
+      <button class="button primary admin-login-btn" id="btn-admin-login" type="button">登录</button>
+      <div class="admin-login-msg" id="admin-login-msg"></div>
+      <div class="admin-login-hint">测试账号：admin / admin123</div>
+    </div>
+  </div>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            <path d="M17.5 15.5 20 18m-2.5 0L20 15.5"></path>
+            <path d="M14 10l-2 2 2 2"></path>
+          </svg>
+        </span>
+        <div class="brand-text">
+          <h1>数字网格员</h1>
+          <p>AI Agent 驱动的社区治理自动化</p>
+        </div>
+      </div>
+      <div class="topbar-meta">
+        <div class="scope-picker">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+          <select id="community-select" aria-label="网格范围">
+            <option>鼓楼区 · 温泉街道</option>
+            <option>鼓楼区 · 鼓东街道</option>
+            <option>鼓楼区 · 水部街道</option>
+          </select>
+        </div>
+        <div class="status-chip online" title="演示模式">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span id="conn-status">Agent 在线</span>
+        </div>
+        <button class="button ghost admin-logout" id="btn-admin-logout" type="button" hidden>退出登录</button>
+        <div class="clock" id="clock">--:--:--</div>
+      </div>
+    </header>
+
+    <div class="body-layout">
+      <aside class="sidebar">
+        <nav class="nav-list" aria-label="主导航">
+          <button class="nav-item active" data-view="inbox">
+            <span class="nav-icon" data-icon="inbox"></span>
+            <span>诉求受理台</span>
+            <span class="nav-badge" id="inbox-badge">3</span>
+          </button>
+          <button class="nav-item" data-view="tickets">
+            <span class="nav-icon" data-icon="clipboard"></span>
+            <span>工单中心</span>
+            <span class="nav-badge" id="ticket-badge">5</span>
+          </button>
+          <button class="nav-item" data-view="knowledge">
+            <span class="nav-icon" data-icon="book"></span>
+            <span>政策知识库</span>
+          </button>
+          <button class="nav-item" data-view="dashboard">
+            <span class="nav-icon" data-icon="chart"></span>
+            <span>数据看板</span>
+          </button>
+          <button class="nav-item" data-view="settings">
+            <span class="nav-icon" data-icon="settings"></span>
+            <span>系统配置</span>
+          </button>
+        </nav>
+        <div class="agent-overview">
+          <div class="agent-overview-head">
+            <span>Agent 节点</span>
+            <span class="mini-status">7/7</span>
+          </div>
+          <ul class="agent-mini-list" id="agent-mini-list"></ul>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <section class="view active" id="view-inbox">
+          <div class="view-head">
+            <div>
+              <h2>诉求受理台</h2>
+              <p>多模态诉求接入与自动治理闭环</p>
+            </div>
+            <div class="view-actions">
+              <button class="button ghost" id="btn-clear" type="button">
+                <span class="btn-icon" data-icon="refresh"></span>
+                <span>重置</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="inbox-grid">
+            <section class="panel intake-panel">
+              <div class="panel-head">
+                <h3>新建诉求</h3>
+                <span class="intake-channel-label">统一人工登记</span>
+              </div>
+              <div class="resident-row">
+                <span class="avatar" id="resident-avatar">王</span>
+                <div class="resident-info">
+                  <strong id="resident-name">王秀英</strong>
+                  <span id="resident-addr">华林花园 3 号楼 502</span>
+                  <span class="resident-registry-hint">在册 1,268 人 · 点击登记</span>
+                </div>
+                <button class="icon-button" id="btn-resident" type="button" title="居民档案登记">
+                  <span class="btn-icon" data-icon="user"></span>
+                </button>
+              </div>
+              <div class="message-box">
+                <textarea id="message-input" rows="4" maxlength="500" placeholder="输入居民反映的问题或政策咨询内容"></textarea>
+                <div class="message-tools">
+                  <button class="icon-button" id="btn-mic" type="button" title="语音输入">
+                    <span class="btn-icon" data-icon="mic"></span>
+                  </button>
+                  <span class="char-count" id="char-count">0 / 500</span>
+                </div>
+              </div>
+              <div class="scenario-row" aria-label="示例场景">
+                <button class="scenario-chip active" data-scenario="0">环境卫生</button>
+                <button class="scenario-chip" data-scenario="1">噪音扰民</button>
+                <button class="scenario-chip" data-scenario="2">违建隐患</button>
+                <button class="scenario-chip" data-scenario="3">政策咨询</button>
+                <button class="scenario-chip" data-scenario="4">养老服务</button>
+              </div>
+              <button class="button primary wide" id="btn-submit" type="button">
+                <span class="btn-icon" data-icon="send"></span>
+                <span>提交并启动 Agent 处理</span>
+              </button>
+            </section>
+
+            <section class="panel case-panel" aria-live="polite">
+              <div class="panel-head">
+                <h3 id="case-title">等待受理</h3>
+                <span class="case-id" id="case-id">GW-——</span>
+              </div>
+              <div class="case-body" id="case-body">
+                <div class="empty-state">
+                  <span class="empty-icon" data-icon="inbox"></span>
+                  <strong>暂无进行中的诉求</strong>
+                  <span>提交一条诉求后，将在这里实时展示 Agent 处理链路</span>
+                </div>
+              </div>
+            </section>
+          </div>
+
+          <section class="panel recent-panel">
+            <div class="panel-head">
+              <h3>今日已受理</h3>
+              <span class="muted" id="today-count">3 件</span>
+            </div>
+            <div class="recent-list" id="recent-list"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-tickets">
+          <div class="view-head">
+            <div>
+              <h2>工单中心</h2>
+              <p>自动派单、责任部门匹配与进度跟踪</p>
+            </div>
+            <div class="view-actions">
+              <div class="search-box">
+                <span class="search-icon" data-icon="search"></span>
+                <input id="ticket-search" type="search" placeholder="搜索工单号或居民">
+              </div>
+            </div>
+          </div>
+          <div class="filter-row" id="ticket-filters">
+            <button class="filter-chip active" data-status="全部">全部</button>
+            <button class="filter-chip" data-status="已派单">已派单</button>
+            <button class="filter-chip" data-status="处理中">处理中</button>
+            <button class="filter-chip" data-status="待确认">待确认</button>
+            <button class="filter-chip" data-status="已归档">已归档</button>
+          </div>
+          <div class="panel table-panel">
+            <div class="table-wrap">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>工单号</th>
+                    <th>居民</th>
+                    <th>类别</th>
+                    <th>事项</th>
+                    <th>责任部门</th>
+                    <th>责任网格员</th>
+                    <th>时限</th>
+                    <th>状态</th>
+                  </tr>
+                </thead>
+                <tbody id="ticket-table-body"></tbody>
+              </table>
+            </div>
+          </div>
+          <div class="ticket-detail" id="ticket-detail" hidden></div>
+        </section>
+
+        <section class="view" id="view-knowledge">
+          <div class="view-head">
+            <div>
+              <h2>政策知识库</h2>
+              <p>鼓楼区政务咨询库 · RAG 检索溯源（本地演示缓存）</p>
+            </div>
+            <div class="view-actions">
+              <div class="search-box">
+                <span class="search-icon" data-icon="search"></span>
+                <input id="kb-search" type="search" placeholder="检索政策、法规、办理条件">
+              </div>
+            </div>
+          </div>
+          <div class="kb-stats">
+            <div class="stat-mini"><span class="stat-mini-value" id="kb-doc-count">0</span><span>已入库文档</span></div>
+            <div class="stat-mini"><span class="stat-mini-value" id="kb-cat-count">0</span><span>覆盖分类</span></div>
+            <div class="stat-mini"><span class="stat-mini-value">92.6%</span><span>检索命中率</span></div>
+            <div class="stat-mini"><span class="stat-mini-value">100%</span><span>引用溯源率</span></div>
+          </div>
+          <div class="kb-layout">
+            <div class="kb-list" id="kb-list"></div>
+            <aside class="kb-detail" id="kb-detail">
+              <div class="empty-state">
+                <span class="empty-icon" data-icon="book"></span>
+                <strong>选择一篇文档</strong>
+                <span>查看政策要点、原文出处与检索关键词</span>
+              </div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-dashboard">
+          <div class="view-head">
+            <div>
+              <h2>数据看板</h2>
+              <p>治理效率与 Agent 自动化成效</p>
+            </div>
+            <div class="view-actions">
+              <button class="button ghost" type="button" id="btn-refresh-dash">
+                <span class="btn-icon" data-icon="refresh"></span>
+                <span>刷新</span>
+              </button>
+            </div>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi-card"><span class="kpi-label">7 日受理量</span><strong class="kpi-value" id="kpi-intake">328</strong><span class="kpi-trend up">↑ 12.3%</span></div>
+            <div class="kpi-card"><span class="kpi-label">平均响应时间</span><strong class="kpi-value" id="kpi-response">4.2<small> 分钟</small></strong><span class="kpi-trend up">人工约 6 小时</span></div>
+            <div class="kpi-card"><span class="kpi-label">自动闭环率</span><strong class="kpi-value" id="kpi-auto">86.4<small>%</small></strong><span class="kpi-trend">人工确认后归档</span></div>
+            <div class="kpi-card"><span class="kpi-label">政策问答准确率</span><strong class="kpi-value" id="kpi-accuracy">92.6<small>%</small></strong><span class="kpi-trend up">目标 ≥ 90%</span></div>
+          </div>
+          <div class="dashboard-grid">
+            <section class="panel chart-panel">
+              <div class="panel-head"><h3>诉求类别分布</h3><span class="muted">近 7 日</span></div>
+              <div class="bar-chart" id="category-chart"></div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="panel-head"><h3>受理趋势</h3><span class="muted">近 7 日</span></div>
+              <div class="line-chart" id="trend-chart">
+                <svg viewBox="0 0 640 220" preserveAspectRatio="none" role="img" aria-label="受理趋势图">
+                  <defs>
+                    <linearGradient id="trendFill" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#2563eb" stop-opacity="0.22"></stop>
+                      <stop offset="100%" stop-color="#2563eb" stop-opacity="0"></stop>
+                    </linearGradient>
+                  </defs>
+                  <path class="area" d="M0,176 C53,164 80,138 128,146 C176,154 213,108 256,118 C299,128 341,92 384,100 C427,108 469,64 512,74 C555,84 597,44 640,52 L640,220 L0,220 Z"></path>
+                  <path class="line" d="M0,176 C53,164 80,138 128,146 C176,154 213,108 256,118 C299,128 341,92 384,100 C427,108 469,64 512,74 C555,84 597,44 640,52"></path>
+                </svg>
+                <div class="chart-x-labels"><span>周四</span><span>周五</span><span>周六</span><span>周日</span><span>周一</span><span>周二</span><span>周三</span></div>
+              </div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="panel-head"><h3>部门处置负荷</h3><span class="muted">今日</span></div>
+              <div class="dept-load" id="dept-load"></div>
+            </section>
+            <section class="panel chart-panel">
+              <div class="panel-head"><h3>Agent 节点耗时</h3><span class="muted">平均</span></div>
+              <div class="node-timing" id="node-timing"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-settings">
+          <div class="view-head">
+            <div>
+              <h2>系统配置</h2>
+              <p>火山引擎 HiAgent 接入与人工审核策略</p>
+            </div>
+            <div class="status-chip online"><span class="status-dot" aria-hidden="true"></span><span>模拟连接</span></div>
+          </div>
+          <div class="settings-grid">
+            <section class="panel settings-panel">
+              <div class="panel-head"><h3>HiAgent 接入</h3><span class="muted">个人空间</span></div>
+              <div class="form-stack">
+                <label class="field">
+                  <span>运行模式</span>
+                  <select id="cfg-mode">
+                    <option value="simulation">本地模拟模式</option>
+                    <option value="real">HiAgent 真实接口</option>
+                  </select>
+                </label>
+                <label class="field">
+                  <span>平台地址</span>
+                  <input id="cfg-endpoint" placeholder="从 HiAgent 发布页面复制" spellcheck="false">
+                </label>
+                <label class="field">
+                  <span>接口地址</span>
+                  <input id="cfg-api-endpoint" placeholder="发布应用后从平台复制" spellcheck="false">
+                </label>
+                <label class="field">
+                  <span>应用 ID</span>
+                  <input id="cfg-app-id" placeholder="从 HiAgent 发布页面复制" spellcheck="false">
+                </label>
+                <label class="field">
+                  <span>工作流 ID</span>
+                  <input id="cfg-workflow-id" placeholder="从 HiAgent 工作流页面复制" spellcheck="false">
+                </label>
+                <label class="field">
+                  <span>API Key</span>
+                  <input id="cfg-api-key" type="password" placeholder="仅保存在本地运行时配置" spellcheck="false">
+                </label>
+                <label class="field">
+                  <span>模型</span>
+                  <select id="cfg-model">
+                    <option>doubao-pro-32k</option>
+                    <option>doubao-lite-32k</option>
+                    <option>hiagent-workflow</option>
+                  </select>
+                </label>
+                <div class="button-row">
+                  <button class="button primary" id="btn-test-conn" type="button">
+                    <span class="btn-icon" data-icon="plug"></span>
+                    <span>连接测试</span>
+                  </button>
+                  <button class="button ghost" id="btn-save-cfg" type="button">保存配置</button>
+                </div>
+              </div>
+            </section>
+            <section class="panel settings-panel">
+              <div class="panel-head"><h3>Agent 节点开关</h3><span class="muted">多 Agent 协作</span></div>
+              <div class="toggle-list" id="agent-toggles"></div>
+            </section>
+            <section class="panel settings-panel">
+              <div class="panel-head"><h3>人工确认策略</h3><span class="muted">人机协同</span></div>
+              <div class="form-stack">
+                <label class="field">
+                  <span>自动回复置信度阈值</span>
+                  <input id="cfg-threshold" type="range" min="60" max="98" value="85" step="1">
+                  <span class="range-value" id="threshold-value">85%</span>
+                </label>
+                <div class="check-list" id="review-categories"></div>
+                <label class="field">
+                  <span>归档方式</span>
+                  <select id="cfg-archive">
+                    <option>网格员一键确认后归档</option>
+                    <option>高置信度自动归档</option>
+                    <option>全部人工确认</option>
+                  </select>
+                </label>
+              </div>
+            </section>
+            <section class="panel settings-panel">
+              <div class="panel-head"><h3>知识库同步</h3><span class="muted">向量数据库 + RAG</span></div>
+              <div class="sync-status">
+                <div class="sync-line">
+                  <span>鼓楼区政务咨询库</span>
+                  <strong>已同步</strong>
+                </div>
+                <div class="progress"><span style="width: 100%"></span></div>
+                <div class="sync-meta">
+                  <span>平台文档 19 · 本地演示缓存 21（待同步）</span>
+                  <span id="last-sync">今天 04:10</span>
+                </div>
+              </div>
+              <button class="button ghost wide" id="btn-sync-kb" type="button">
+                <span class="btn-icon" data-icon="refresh"></span>
+                <span>重新同步知识库</span>
+              </button>
+            </section>
+          </div>
+        </section>
+      </main>
+
+      <aside class="runtime-panel">
+        <section class="runtime-section">
+          <div class="runtime-head">
+            <h3>Agent 处理链路</h3>
+            <span class="mini-status" id="pipeline-state">就绪</span>
+          </div>
+          <ul class="pipeline-list" id="pipeline-list"></ul>
+        </section>
+        <section class="runtime-section">
+          <div class="runtime-head">
+            <h3>运行日志</h3>
+            <button class="text-button" id="btn-clear-log" type="button">清空</button>
+          </div>
+          <div class="log-box" id="log-box"></div>
+        </section>
+        <section class="runtime-section">
+          <div class="runtime-head">
+            <h3>居民上下文</h3>
+            <span class="mini-status">已关联</span>
+          </div>
+          <div class="resident-context" id="resident-context"></div>
+        </section>
+      </aside>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="resident-modal" hidden>
+    <div class="modal resident-modal" role="dialog" aria-modal="true" aria-labelledby="resident-modal-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-modal-title">居民档案登记</h3>
+          <span class="muted">搜索姓名、手机号或楼栋房号，点击即可切换</span>
+        </div>
+        <button class="icon-button" id="btn-close-resident" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="resident-dir-toolbar">
+        <div class="search-box">
+          <span class="search-icon" data-icon="search"></span>
+          <input id="resident-search" type="search" placeholder="搜索姓名 / 手机号 / 楼栋房号">
+        </div>
+        <select id="resident-filter" aria-label="按网格筛选">
+          <option>全部网格</option>
+          <option>温泉街道·华林社区</option>
+          <option>温泉街道·观风亭社区</option>
+          <option>温泉街道·金泉社区</option>
+        </select>
+        <button class="button ghost" id="btn-import-resident" type="button">批量导入</button>
+        <button class="button primary" id="btn-add-resident" type="button">新增登记</button>
+      </div>
+      <div class="resident-dir-list" id="resident-dir-list"></div>
+      <div class="resident-dir-foot">
+        <span id="resident-dir-count">--</span>
+        <span>网格在册 1,268 人</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="resident-form-modal" hidden>
+    <div class="modal resident-form-modal" role="dialog" aria-modal="true" aria-labelledby="resident-form-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-form-title">新增居民登记</h3>
+          <span class="muted">保存后自动切换到新档案</span>
+        </div>
+        <button class="icon-button" id="btn-close-resident-form" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="resident-form-grid">
+        <label class="field"><span>姓名</span><input id="rf-name" type="text" placeholder="居民姓名"></label>
+        <label class="field"><span>手机号</span><input id="rf-phone" type="text" placeholder="用于联系回访"></label>
+        <label class="field"><span>所属社区</span>
+          <select id="rf-community">
+            <option>温泉街道·华林社区</option>
+            <option>温泉街道·观风亭社区</option>
+            <option>温泉街道·金泉社区</option>
+          </select>
+        </label>
+        <label class="field"><span>所属网格</span><input id="rf-grid" type="text" placeholder="如 华林网格 03"></label>
+        <label class="field span-2"><span>楼栋房号</span><input id="rf-addr" type="text" placeholder="如 华林花园 3 号楼 502"></label>
+        <label class="field span-2"><span>标签</span><input id="rf-tags" type="text" placeholder="如 高龄老人、独居、租户"></label>
+      </div>
+      <div class="modal-actions">
+        <button class="button ghost" id="btn-cancel-resident" type="button">取消</button>
+        <button class="button primary" id="btn-save-resident" type="button">保存并选中</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-mask" id="resident-import-modal" hidden>
+    <div class="modal resident-import-modal" role="dialog" aria-modal="true" aria-labelledby="resident-import-title">
+      <div class="modal-head">
+        <div>
+          <h3 id="resident-import-title">居民信息批量导入</h3>
+          <span class="muted">下载登记表发到居民群，回收后选择文件一键导入</span>
+        </div>
+        <button class="icon-button" id="btn-close-import" type="button" title="关闭">
+          <span class="btn-icon">&times;</span>
+        </button>
+      </div>
+      <div class="import-body">
+        <div class="import-steps">
+          <div class="import-step"><strong>1</strong><span>下载登记表</span></div>
+          <div class="import-step"><strong>2</strong><span>居民群内填写</span></div>
+          <div class="import-step"><strong>3</strong><span>回收并导入</span></div>
+        </div>
+        <a class="button ghost wide" id="btn-download-template" href="data/templates/居民信息登记表.xlsx" download>
+          <span class="btn-icon" data-icon="file"></span>
+          <span>下载居民信息登记表模板</span>
+        </a>
+        <label class="import-drop" for="import-file">
+          <input id="import-file" type="file" accept=".xlsx,.csv">
+          <span class="import-drop-icon" data-icon="upload"></span>
+          <strong>点击选择表格文件</strong>
+          <span>支持 .xlsx 和 .csv，导入前可预览确认</span>
+        </label>
+        <div class="import-preview-head">
+          <span id="import-preview-count">尚未选择文件</span>
+          <span>系统自动识别“新增登记”与“地址变更”</span>
+        </div>
+        <div class="import-preview" id="import-preview"></div>
+      </div>
+      <div class="modal-actions">
+        <button class="button ghost" id="btn-cancel-import" type="button">取消</button>
+        <button class="button primary" id="btn-confirm-import" type="button" disabled>确认导入</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-wrap" id="toast-wrap" aria-live="polite"></div>
+  <script src="data/knowledge-base.js"></script>
+  <script src="hiagent-client.js"></script>
+  <script src="vendor/xlsx.full.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
