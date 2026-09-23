@@ -1,0 +1,94 @@
+<view class="page" wx:if="{{workOrder}}">
+  <view class="card head-card">
+    <view class="head-top">
+      <text class="ticket-no">{{workOrder.ticketNo}}</text>
+      <text class="tag {{workOrder.status === '已归档' ? 'tag-archived' : ''}}">{{workOrder.status}}</text>
+    </view>
+    <view class="head-title">{{workOrder.title}}</view>
+    <view class="head-time">提交时间：{{workOrder.createdAtText}}</view>
+  </view>
+
+  <view class="card info-card">
+    <view class="info-row">
+      <text class="info-label">诉求类别</text>
+      <text class="info-value">{{workOrder.category}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">事发地址</text>
+      <text class="info-value">{{workOrder.incidentAddress}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">登记住址</text>
+      <text class="info-value">{{workOrder.residentAddress || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">联系电话</text>
+      <text class="info-value">{{workOrder.residentPhone || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">发生时间</text>
+      <text class="info-value">{{workOrder.happenTime || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">持续时长</text>
+      <text class="info-value">{{workOrder.duration || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">发生频率</text>
+      <text class="info-value">{{workOrder.frequency || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">是否已反映</text>
+      <text class="info-value">{{workOrder.previouslyReported || '待补充'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">所属社区</text>
+      <text class="info-value">{{workOrder.community || '待核实'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">所属网格</text>
+      <text class="info-value">{{workOrder.grid || '待核实'}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">责任部门</text>
+      <text class="info-value">{{workOrder.department}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">优先级</text>
+      <text class="info-value">{{workOrder.priority}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">响应时限</text>
+      <text class="info-value">{{workOrder.sla}}</text>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-label">诉求内容</view>
+    <view class="description">{{workOrder.description}}</view>
+  </view>
+
+  <view class="card">
+    <view class="section-label">处理进度</view>
+    <view class="timeline">
+      <view class="timeline-item" wx:for="{{timeline}}" wx:key="time">
+        <view class="timeline-dot"></view>
+        <view class="timeline-body">
+          <view class="timeline-status">{{item.status}}</view>
+          <view class="timeline-time">{{item.timeText}}</view>
+          <view wx:if="{{item.note}}" class="timeline-note">{{item.note}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <button
+    wx:if="{{workOrder.status === '待居民确认'}}"
+    class="primary-btn confirm-btn"
+    loading="{{confirming}}"
+    disabled="{{confirming}}"
+    bindtap="confirmOrder"
+  >
+    确认诉求内容
+  </button>
+</view>

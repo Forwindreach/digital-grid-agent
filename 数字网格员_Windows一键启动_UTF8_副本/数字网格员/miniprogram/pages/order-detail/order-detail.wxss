@@ -1,0 +1,115 @@
+.head-card {
+  margin-bottom: 20rpx;
+}
+
+.head-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ticket-no {
+  color: #0b6b4f;
+  font-weight: 700;
+}
+
+.head-title {
+  margin-top: 16rpx;
+  font-size: 34rpx;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
+.head-time {
+  margin-top: 12rpx;
+  color: #9ca3af;
+  font-size: 24rpx;
+}
+
+.info-card {
+  margin-bottom: 20rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  color: #6b7280;
+}
+
+.info-value {
+  max-width: 520rpx;
+  text-align: right;
+  color: #1f2937;
+}
+
+.section-label {
+  font-size: 28rpx;
+  font-weight: 600;
+  margin-bottom: 16rpx;
+}
+
+.description {
+  line-height: 1.7;
+  color: #374151;
+  white-space: pre-wrap;
+}
+
+.card + .card {
+  margin-bottom: 20rpx;
+}
+
+.timeline-item {
+  position: relative;
+  display: flex;
+  gap: 20rpx;
+  padding-bottom: 28rpx;
+}
+
+.timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.timeline-dot {
+  width: 18rpx;
+  height: 18rpx;
+  border-radius: 50%;
+  background: #0b6b4f;
+  margin-top: 10rpx;
+  flex-shrink: 0;
+}
+
+.timeline-body {
+  flex: 1;
+}
+
+.timeline-status {
+  font-weight: 600;
+}
+
+.timeline-time {
+  color: #9ca3af;
+  font-size: 22rpx;
+  margin-top: 4rpx;
+}
+
+.timeline-note {
+  margin-top: 8rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.confirm-btn {
+  margin-top: 32rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+}

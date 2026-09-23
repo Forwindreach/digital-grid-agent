@@ -1,0 +1,51 @@
+<view class="chat-page">
+  <view wx:if="{{blocked}}" class="blocked">
+    <view class="card">
+      <view class="blocked-title">请先完成地址登记</view>
+      <view class="blocked-desc">登记后即可向数字网格员提交诉求或政策咨询。</view>
+      <button class="primary-btn" bindtap="goRegister">前往登记</button>
+    </view>
+  </view>
+
+  <block wx:else>
+    <scroll-view
+      class="message-scroll"
+      scroll-y
+      scroll-into-view="{{scrollIntoView}}"
+      scroll-with-animation
+    >
+      <view class="message-list">
+        <view wx:if="{{!messages.length}}" class="empty">向数字网格员描述您的诉求或咨询政策问题</view>
+        <view
+          wx:for="{{messages}}"
+          wx:key="id"
+          id="msg-{{item.id}}"
+          class="message-row {{item.role}}"
+        >
+          <view wx:if="{{item.role === 'assistant'}}" class="avatar avatar-agent">格</view>
+          <view class="bubble-wrap">
+            <view wx:if="{{item.role === 'assistant'}}" class="bubble-label">数字网格员</view>
+            <view class="bubble {{item.role === 'user' ? 'bubble-user' : 'bubble-agent'}}">
+              <text class="bubble-content">{{item.content}}</text>
+              <view class="bubble-status {{item.pending ? 'pending' : ''}}">{{item.timeText}}</view>
+            </view>
+          </view>
+          <view wx:if="{{item.role === 'user'}}" class="avatar avatar-user">{{item.role === 'user' ? '我' : ''}}</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view class="input-bar">
+      <input
+        class="message-input"
+        value="{{input}}"
+        bindinput="onInput"
+        bindconfirm="sendMessage"
+        confirm-type="send"
+        maxlength="500"
+        placeholder="描述问题或咨询政策"
+      />
+      <button class="send-btn" disabled="{{processing}}" bindtap="sendMessage">发送</button>
+    </view>
+  </block>
+</view>

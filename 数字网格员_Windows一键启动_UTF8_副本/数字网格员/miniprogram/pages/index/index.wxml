@@ -1,0 +1,58 @@
+<view class="page index-page">
+  <view class="hero">
+    <view class="hero-title">数字网格员</view>
+    <view class="hero-sub">居民诉求受理与政策咨询服务</view>
+    <view class="hero-status">
+      <text wx:if="{{registered}}">已登记地址</text>
+      <text wx:else>尚未登记地址</text>
+    </view>
+  </view>
+
+  <view wx:if="{{!loading && !registered}}" class="card notice-card">
+    <view class="notice-title">请先完成地址登记</view>
+    <view class="notice-desc">登记后，数字网格员才能准确核对诉求发生位置并生成工单。</view>
+    <button class="primary-btn" bindtap="goRegister">立即登记</button>
+  </view>
+
+  <view wx:if="{{!loading && registered}}" class="card address-card">
+    <view class="address-label">登记地址</view>
+    <view class="address-text">{{resident.name}} · {{resident.grid}}</view>
+    <view class="address-line">{{resident.community}}</view>
+    <view class="address-line">{{resident.address}}</view>
+    <button class="ghost-btn address-edit-btn" bindtap="goRegister">修改地址</button>
+  </view>
+
+  <view class="quick-grid">
+    <button class="quick-item" bindtap="goChat">
+      <view class="quick-icon quick-icon-primary">问</view>
+      <view>发起诉求</view>
+    </button>
+    <button class="quick-item" bindtap="goOrders">
+      <view class="quick-icon quick-icon-warn">单</view>
+      <view>我的工单</view>
+    </button>
+  </view>
+
+  <view class="section-head">
+    <text class="section-title">最近工单</text>
+    <text class="section-more" bindtap="goOrders">全部</text>
+  </view>
+
+  <view wx:if="{{workOrders.length}}" class="order-list">
+    <view
+      class="card order-card"
+      wx:for="{{workOrders}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="goOrderDetail"
+    >
+      <view class="order-top">
+        <text class="order-no">{{item.ticketNo}}</text>
+        <text class="tag {{item.status === '已归档' ? 'tag-archived' : ''}}">{{item.status}}</text>
+      </view>
+      <view class="order-title">{{item.title}}</view>
+      <view class="order-meta">{{item.category}} · {{item.createdAtText}}</view>
+    </view>
+  </view>
+  <view wx:else class="empty">暂无工单记录</view>
+</view>

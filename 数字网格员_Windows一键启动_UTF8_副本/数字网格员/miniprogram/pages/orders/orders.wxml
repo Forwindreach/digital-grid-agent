@@ -1,0 +1,41 @@
+<view class="page">
+  <view class="filter-bar">
+    <view
+      class="filter-item {{filter === 'all' ? 'active' : ''}}"
+      data-filter="all"
+      bindtap="changeFilter"
+    >全部</view>
+    <view
+      class="filter-item {{filter === 'active' ? 'active' : ''}}"
+      data-filter="active"
+      bindtap="changeFilter"
+    >处理中</view>
+    <view
+      class="filter-item {{filter === 'archived' ? 'active' : ''}}"
+      data-filter="archived"
+      bindtap="changeFilter"
+    >已归档</view>
+  </view>
+
+  <view wx:if="{{!loading && workOrders.length}}" class="order-list">
+    <view
+      class="card order-card"
+      wx:for="{{workOrders}}"
+      wx:key="id"
+      data-id="{{item.id}}"
+      bindtap="goDetail"
+    >
+      <view class="order-top">
+        <text class="order-no">{{item.ticketNo}}</text>
+        <text class="tag {{item.status === '已归档' ? 'tag-archived' : ''}}">{{item.status}}</text>
+      </view>
+      <view class="order-title">{{item.title}}</view>
+      <view class="order-detail-row">
+        <text>{{item.category}}</text>
+        <text>{{item.department}}</text>
+      </view>
+      <view class="order-meta">{{item.createdAtText}}</view>
+    </view>
+  </view>
+  <view wx:else class="empty">暂无工单</view>
+</view>

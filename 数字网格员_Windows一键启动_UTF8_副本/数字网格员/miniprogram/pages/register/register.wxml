@@ -1,0 +1,64 @@
+<view class="page">
+  <view class="card form-card">
+    <view class="field-label">姓名</view>
+    <input
+      class="field-input"
+      value="{{name}}"
+      data-field="name"
+      bindinput="onInput"
+      placeholder="请输入居民姓名"
+      maxlength="30"
+    />
+
+    <view class="field-label">手机号</view>
+    <input
+      class="field-input"
+      type="number"
+      value="{{phone}}"
+      data-field="phone"
+      bindinput="onInput"
+      placeholder="用于联系回访"
+      maxlength="11"
+    />
+
+    <view class="field-label">所属社区</view>
+    <picker mode="selector" range="{{communities}}" value="{{communityIndex}}" bindchange="onCommunityChange">
+      <view class="picker-value">{{communities[communityIndex]}}</view>
+    </picker>
+
+    <view class="field-label">所属网格</view>
+    <input
+      class="field-input"
+      value="{{grid}}"
+      data-field="grid"
+      bindinput="onInput"
+      placeholder="如 华林网格 03"
+      maxlength="40"
+    />
+
+    <view class="field-label">楼栋房号</view>
+    <input
+      class="field-input"
+      value="{{address}}"
+      data-field="address"
+      bindinput="onInput"
+      placeholder="如 华林花园 3 号楼 502"
+      maxlength="80"
+    />
+
+    <checkbox-group class="consent-group">
+      <label class="consent-row" bindtap="toggleConsent">
+        <checkbox value="consent" checked="{{consent}}" catchtap="toggleConsent" />
+        <text>我已阅读并同意个人信息使用说明，信息仅用于社区网格治理和诉求处理。</text>
+      </label>
+    </checkbox-group>
+  </view>
+
+  <view
+    class="primary-btn submit-btn"
+    hover-class="submit-btn-hover"
+    bindtap="submit"
+  >
+    {{submitText}}
+  </view>
+</view>

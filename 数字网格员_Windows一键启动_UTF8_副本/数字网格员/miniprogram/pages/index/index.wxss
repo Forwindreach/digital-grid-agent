@@ -1,0 +1,169 @@
+.index-page {
+  padding-top: 24rpx;
+}
+
+.hero {
+  background: #0b6b4f;
+  border-radius: 20rpx;
+  padding: 40rpx 32rpx;
+  color: #ffffff;
+  margin-bottom: 24rpx;
+}
+
+.hero-title {
+  font-size: 44rpx;
+  font-weight: 700;
+}
+
+.hero-sub {
+  margin-top: 10rpx;
+  font-size: 26rpx;
+  opacity: 0.85;
+}
+
+.hero-status {
+  display: inline-flex;
+  margin-top: 26rpx;
+  padding: 8rpx 20rpx;
+  border-radius: 999rpx;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 24rpx;
+}
+
+.notice-card {
+  margin-bottom: 24rpx;
+}
+
+.notice-title {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.notice-desc {
+  color: #6b7280;
+  margin: 12rpx 0 24rpx;
+  line-height: 1.6;
+}
+
+.address-card {
+  margin-bottom: 24rpx;
+}
+
+.address-label {
+  color: #0b6b4f;
+  font-size: 24rpx;
+}
+
+.address-text {
+  font-size: 34rpx;
+  font-weight: 600;
+  margin-top: 8rpx;
+}
+
+.address-line {
+  margin-top: 6rpx;
+  color: #6b7280;
+}
+
+.quick-grid {
+  display: flex;
+  gap: 20rpx;
+  margin-bottom: 32rpx;
+}
+
+.quick-item {
+  flex: 1;
+  height: 156rpx;
+  background: #ffffff;
+  border-radius: 16rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10rpx;
+  color: #1f2937;
+  font-size: 26rpx;
+}
+
+.quick-item::after {
+  border: none;
+}
+
+.quick-icon {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  font-size: 28rpx;
+}
+
+.quick-icon-primary {
+  background: #0b6b4f;
+}
+
+.quick-icon-warn {
+  background: #d97706;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+}
+
+.section-more {
+  color: #0b6b4f;
+  font-size: 24rpx;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.order-card {
+  padding: 24rpx;
+}
+
+.order-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.order-no {
+  color: #0b6b4f;
+  font-weight: 600;
+}
+
+.order-title {
+  margin-top: 14rpx;
+  font-size: 28rpx;
+  line-height: 1.5;
+}
+
+.order-meta {
+  margin-top: 8rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.address-edit-btn {
+  display: block;
+  margin-top: 18rpx;
+  height: 68rpx;
+  line-height: 68rpx;
+  font-size: 26rpx;
+  text-align: center;
+  padding: 0;
+}

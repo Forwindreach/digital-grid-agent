@@ -1,0 +1,119 @@
+.profile-card {
+  display: flex;
+  align-items: center;
+  gap: 22rpx;
+  margin-bottom: 20rpx;
+}
+
+.avatar {
+  width: 92rpx;
+  height: 92rpx;
+  border-radius: 50%;
+  background: #0b6b4f;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+  flex-shrink: 0;
+}
+
+.profile-main {
+  flex: 1;
+}
+
+.profile-name {
+  font-size: 34rpx;
+  font-weight: 600;
+}
+
+.profile-sub {
+  margin-top: 6rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+}
+
+.small-btn {
+  height: 64rpx;
+  line-height: 64rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+}
+
+.setting-card {
+  margin-bottom: 20rpx;
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18rpx 0;
+  border-bottom: 1rpx solid #f3f4f6;
+}
+
+.setting-row:last-child {
+  border-bottom: none;
+}
+
+.setting-label {
+  color: #6b7280;
+}
+
+.setting-value {
+  color: #1f2937;
+}
+
+.api-input {
+  height: 88rpx;
+  line-height: 88rpx;
+  padding: 0 24rpx;
+  margin-top: 16rpx;
+  background: #f4f6f5;
+  border-radius: 12rpx;
+  box-sizing: border-box;
+}
+
+.api-actions {
+  display: flex;
+  gap: 16rpx;
+  margin-top: 20rpx;
+}
+
+.test-btn,
+.save-btn {
+  height: 84rpx;
+  line-height: 84rpx;
+  font-size: 28rpx;
+}
+
+.test-btn {
+  flex: 1;
+}
+
+.save-btn {
+  flex: 1.6;
+  margin-top: 0;
+}
+
+.privacy-card {
+  margin-bottom: 32rpx;
+}
+
+.privacy-title {
+  font-size: 28rpx;
+  font-weight: 600;
+}
+
+.privacy-text {
+  margin-top: 12rpx;
+  color: #6b7280;
+  font-size: 24rpx;
+  line-height: 1.7;
+}
+
+.logout-btn {
+  height: 88rpx;
+  line-height: 88rpx;
+  color: #b91c1c;
+}
