@@ -1,6 +1,7 @@
 ﻿$ErrorActionPreference = "Stop"
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..\..")).Path
 Set-Location $ProjectRoot
+$TestMode = $env:DGW_TEST_MODE -eq "1"
 
 function Write-Step([string]$Message) {
   Write-Host ""
@@ -158,7 +159,7 @@ Write-Host "Node.js：$(& $nodeExe -v)"
 
 New-Item -ItemType Directory -Force -Path (Join-Path $ProjectRoot "data\runtime") | Out-Null
 $configFile = Join-Path $ProjectRoot "data\runtime\hiagent-config.json"
-if (-not (Test-Path $configFile)) {
+if (-not (Test-Path $configFile) -and -not $TestMode) {
   Write-Step "HiAgent 配置"
   Write-Host "直接回车使用本地模拟模式，评审演示不需要 API Key。"
   $useReal = Read-Host "是否配置 HiAgent 真实接口？[y/N]"
@@ -212,6 +213,9 @@ for ($i = 0; $i -lt 30; $i++) {
 }
 
 if (-not $ready) {
+  if ($serverProcess -and -not $serverProcess.HasExited) {
+    Stop-Process -Id $serverProcess.Id -Force -ErrorAction SilentlyContinue
+  }
   Write-Host "服务启动失败，请确认端口未被占用后重试。" -ForegroundColor Red
   exit 1
 }
@@ -228,6 +232,12 @@ if ($lanIp) {
 }
 Write-Host "管理员账号：admin / admin123"
 Write-Host "网格员账号：hualin01 / 123456"
+
+if ($TestMode) {
+  Stop-Process -Id $serverProcess.Id -Force -ErrorAction SilentlyContinue
+  Write-Host "Windows 一键启动兼容性测试通过。" -ForegroundColor Green
+  exit 0
+}
 
 Start-Process "http://127.0.0.1:$port"
 

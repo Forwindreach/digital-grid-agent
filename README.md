@@ -13,6 +13,7 @@
   <img alt="HiAgent" src="https://img.shields.io/badge/HiAgent-Multi--Agent-2563EB?style=flat-square" />
   <img alt="RAG" src="https://img.shields.io/badge/RAG-21篇政策知识库-0891B2?style=flat-square" />
   <img alt="Node" src="https://img.shields.io/badge/Node.js-%3E%3D18-339933?style=flat-square&logo=nodedotjs&logoColor=white" />
+  <a href="https://github.com/Forwindreach/digital-grid-agent/actions/workflows/windows-compat.yml"><img alt="Windows Compatibility" src="https://github.com/Forwindreach/digital-grid-agent/actions/workflows/windows-compat.yml/badge.svg" /></a>
   <img alt="WeChat Mini Program" src="https://img.shields.io/badge/微信小程序-居民端-07C160?style=flat-square&logo=wechat&logoColor=white" />
 </p>
 

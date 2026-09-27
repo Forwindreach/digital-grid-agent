@@ -1,0 +1,48 @@
+name: Windows Compatibility
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  windows-smoke:
+    runs-on: windows-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Analyze PowerShell scripts
+        shell: pwsh
+        run: |
+          Set-PSRepository PSGallery -InstallationPolicy Trusted
+          Install-Module PSScriptAnalyzer -Scope CurrentUser -Force
+          $results = Invoke-ScriptAnalyzer -Path scripts -Recurse -Severity Error
+          if ($results) {
+            $results | Format-Table -AutoSize
+            throw "PSScriptAnalyzer found errors."
+          }
+
+      - name: Check JavaScript syntax
+        run: npm run check
+
+      - name: Run application smoke tests
+        run: npm test
+
+      - name: Run Windows one-click launcher
+        shell: pwsh
+        env:
+          DGW_TEST_MODE: "1"
+          PORT: "3211"
+        run: |
+          & cmd.exe /c "scripts\launch\start-windows.bat"
+          if ($LASTEXITCODE -ne 0) {
+            exit $LASTEXITCODE
+          }
